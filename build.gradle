@@ -1,0 +1,27 @@
+def vJavaLang = '1.8'
+def javaProjects = [ project(':site'), project(':client')]
+
+wrapper.gradleVersion = '2.3'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.2.RELEASE")
+    }
+}
+
+configure(allprojects) {
+    apply plugin: 'idea'
+}
+
+configure(javaProjects) {
+    apply plugin: 'java'
+
+    sourceCompatibility = vJavaLang
+    targetCompatibility = vJavaLang
+    repositories {
+        mavenCentral()
+    }
+}

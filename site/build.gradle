@@ -1,0 +1,12 @@
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'diffind-web'
+    version =  '0.1.0'
+}
+dependencies {
+    compile project(':client')
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    testCompile("junit:junit")
+}
+
