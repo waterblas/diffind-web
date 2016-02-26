@@ -1,14 +1,52 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Getting Started: Serving Web Content</title>
+<title>Diffind</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="css/base.css" type="text/css" />
 <script src="lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
-    <p th:text="'Hello, ' + ${name} + '!'" />
+    <nav class="group-links">
+        <ul class="navigation">
+            <li><a href="#">+You</a></li>
+            <li><a href="http://bbs.byr.cn/">BYR BBS</a></li>
+            <li><a href="#">Images</a></li>
+            <li><a href="#"><img src="img/google-grid.png" alt="google-grid" class="grid" /></a></li>
+            <li><a href="#" class="btn-login">By Donvan</a>
+        </li></ul>
+    </nav>
+    <section class="main">
+        <div class="logo">
+        <img src="img/google-logo.png" alt="google-logo" />
+        </div>
+        <form action="#" method="post">
+            <input type="text" name="search" id="search" />
+            <fieldset class="search-button">
+                <button>
+                    Diffind Search
+                </button>
+                <button>
+                    I’m Feeling Lucky
+                </button>
+            </fieldset>
+        </form>
+    </section>
+    <footer class="about">
+        <div class="advertising">
+            <a href="#">Advertising</a>
+            <a href="#">Business</a>
+            <a href="#">About</a>
+        </div>
+        <div class="terms">
+            <a href="#">Privacy &amp; Terms</a>
+            <a href="#">Settings</a>
+            <a href="#" th:text="'Hello, ' + ${name} + '!'"></a>
+        </div>
+    </footer>
 </body>
 
 <script src="js/all.min.js"></script>
 </html>
+
+
