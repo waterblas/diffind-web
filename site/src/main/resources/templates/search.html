@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Diffind search</title>
     <link type="text/css" rel="stylesheet" href="css/style.css" />
@@ -7,7 +7,7 @@
 <body>
 <header>
     <a href="#"><img class="header-logo" src="img/logo91_33.png" alt="Google logo" /></a>
-    <input class="searchbar" type="text" name="searchbar" value="build this webpage" />
+    <input class="searchbar" type="text" name="searchbar" th:value="${query}" />
     <a href="#"><img class="voice" src="img/google-voice.png" alt="voice" /></a>
     <a href="#"><div class="submit"><img class="magnifier" src="img/loupe.png" alt="submit" /></div></a>
     <ul class="h-image">
