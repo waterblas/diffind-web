@@ -238,13 +238,6 @@ p.search-numbers {
     border-bottom: 1px solid #e4e4e4;
 }
 
-ul.search-results {
-    position: absolute;
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-
 li.main-link {
     font-family: arial, sans-serif;
     font-size: 18px;
@@ -302,6 +295,13 @@ li.description {
     font-family: arial, sans-serif;
     font-size: small;
     color: #1a0dab;
+}
+
+ul.search-results-1 {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
 
 ul.search-results-2 {
