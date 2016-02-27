@@ -4,9 +4,11 @@ jar {
     baseName = 'diffind-web'
     version =  '0.1.0'
 }
+
 dependencies {
     compile project(':client')
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile ("org.elasticsearch:elasticsearch:2.2.0")
     testCompile("junit:junit")
 }
 
