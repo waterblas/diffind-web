@@ -545,3 +545,7 @@ footer {
 .bottom-footer:active {
     color: #777777;
 }
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+}

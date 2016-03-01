@@ -30,10 +30,12 @@
     <button class="button3" type="submit" name="gear"><img class="gear" src="img/gear.gif" alt="gear" /></button>
 </nav>
 <section>
-    <p class="search-numbers" th:text="'找到约 ' + ${response.getHits().totalHits()} + ' 条结果 （用时  ' + ${response.getTook()} + ' 秒）'"></p>
+    <p class="search-numbers" th:text="'找到约 ' + ${totalHits} + ' 条结果 （用时  ' + ${response.getTook()} + ' 秒）'"></p>
     <div class="search-results-container">
         <ul th:each="hit,iter : ${response.getHits().hits()}" th:class="'search-results-' + ${iter.index + 1}">
-            <li class="main-link"><a target="_blank" th:href="${hit.getSource().get('url')}">标题忘记放进索引了，TODO .......</a></li>
+            <li class="main-link">
+                <a target="_blank" th:href="${hit.getSource().get('url')}">标题忘记放进索引了，TODO .......</a>
+            </li>
             <li class="second-link" th:text="${hit.getSource().get('url')}"></li>
             <li class="description" th:utext="${hit.getHighlightFields().get('content').getFragments()[0]}"></li>
             <li class="visit"></li>
@@ -43,24 +45,27 @@
     <div class="related">
         <ul class="related-list">
             <li class="intro" th:text="${query} + '相关搜索'"></li>
-            <li class="related-link"><a href="#"><span class="related-bold">how to</span> build <span class="related-bold">a web page</span></a></li>
+            <li class="related-link"><a href="#">
+                    <span class="related-bold">how to</span> build <span class="related-bold">a web page</span>
+            </a></li>
             <li class="related-link"><a href="#">build <span class="related-bold">a web page for dummies</span></a></li>
         </ul>
     </div>
     <div class="search-pages">
         <table>
             <tr>
-                <td class="table-font td-front"><span class="page-go"></span><span class="1">1</span></td>
-                <td class="table-font"><a href="#"><span class="page-o"></span>2</a></td>
-                <td class="table-font"><a href="#"><span class="page-o"></span>3</a></td>
-                <td class="table-font"><a href="#"><span class="page-o"></span>4</a></td>
-                <td class="table-font"><a href="#"><span class="page-o"></span>5</a></td>
-                <td class="table-font"><a href="#"><span class="page-o"></span>6</a></td>
-                <td class="table-font"><a href="#"><span class="page-o"></span>7</a></td>
-                <td class="table-font"><a href="#"><span class="page-o"></span>8</a></td>
-                <td class="table-font"><a href="#"><span class="page-o"></span>9</a></td>
-                <td class="table-font"><a href="#"><span class="page-o"></span>10</a></td>
-                <td class="table-font"><a href="#"><span class="page-gle"></span><span class="volgende">下一页</span></a></td>
+                <!--@thymesVar id="currentPage" type="long"-->
+                <td th:each="i : ${#numbers.sequence(startPage, endPage)}"
+                    th:class="${startPage==i} ? 'table-font td-front': 'table-font'" >
+                    <a  th:href="@{/s(q=${query}, start=${(i-1)*size})}"
+                        th:class="${currentPage==i} ? 'disabled': ''" >
+                        <span th:class="${startPage==i} ? 'page-go': 'page-o'"></span>
+                        <span th:text="${i}"></span>
+                    </a>
+                </td>
+                <td class="table-font">
+                    <a href="#"><span class="page-gle"></span><span class="volgende">下一页</span></a>
+                </td>
             </tr>
         </table>
     </div>
