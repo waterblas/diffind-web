@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Diffind search</title>
+    <title>Diffind</title>
     <link type="text/css" rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -25,52 +25,56 @@
         <li><a class="navbutton" href="#">更多</a></li>
         <li><a class="navbutton" href="#">搜索工具</a></li>
     </ul>
-    <button class="button1" type="submit" name="private"><img class="private" src="img/private.gif" alt="private" /></button>
+    <button class="button1" type="submit" name="private">
+        <img class="private" src="img/private.gif" alt="private" /></button>
     <button class="button2" type="submit" name="global"><img class="global" src="img/global.gif" alt="global" /></button>
     <button class="button3" type="submit" name="gear"><img class="gear" src="img/gear.gif" alt="gear" /></button>
 </nav>
 <section>
-    <p class="search-numbers" th:text="'找到约 ' + ${totalHits} + ' 条结果 （用时  ' + ${response.getTook()} + ' 秒）'"></p>
-    <div class="search-results-container">
-        <ul th:each="hit,iter : ${response.getHits().hits()}" th:class="'search-results-' + ${iter.index + 1}">
-            <li class="main-link">
-                <a target="_blank" th:href="${hit.getSource().get('url')}">标题忘记放进索引了，TODO .......</a>
-            </li>
-            <li class="second-link" th:text="${hit.getSource().get('url')}"></li>
-            <li class="description" th:utext="${hit.getHighlightFields().get('content').getFragments()[0]}"></li>
-            <li class="visit"></li>
-        </ul>
 
-    </div>
-    <div class="related">
-        <ul class="related-list">
-            <li class="intro" th:text="${query} + '相关搜索'"></li>
-            <li class="related-link"><a href="#">
-                    <span class="related-bold">how to</span> build <span class="related-bold">a web page</span>
-            </a></li>
-            <li class="related-link"><a href="#">build <span class="related-bold">a web page for dummies</span></a></li>
-        </ul>
-    </div>
-    <div class="search-pages">
-        <table>
-            <tr>
-                <!--@thymesVar id="currentPage" type="long"-->
-                <td th:each="i : ${#numbers.sequence(startPage, endPage)}"
-                    th:class="${startPage==i} ? 'table-font td-front': 'table-font'" >
-                    <a  th:href="@{/s(q=${query}, start=${(i-1)*size})}"
-                        th:class="${currentPage==i} ? 'disabled': ''" >
-                        <span th:class="${startPage==i} ? 'page-go': 'page-o'"></span>
-                        <span th:text="${i}"></span>
-                    </a>
-                </td>
-                <td class="table-font">
-                    <a th:href="@{/s(q=${query}, start=${currentPage*size})}">
-                        <span class="page-gle"></span><span class="volgende">下一页</span>
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </div>
+<div class="search-results-container">
+    <p class="search-numbers"
+       th:text="'找到约 ' + ${totalHits} + ' 条结果，以下是第 ' + ${currentPage} +' 页，（用时  ' + ${response.getTook()} + ' 秒）'">
+    </p>
+    <ul th:each="hit,iter : ${response.getHits().hits()}" class="search-results">
+        <li class="main-link">
+            <a target="_blank" th:href="${hit.getSource().get('url')}">标题忘记放进索引了，TODO .......</a>
+        </li>
+        <li class="second-link" th:text="${hit.getSource().get('url')}"></li>
+        <li class="description" th:utext="${hit.getHighlightFields().get('content').getFragments()[0]}"></li>
+        <li class="visit"></li>
+    </ul>
+
+</div>
+<div class="related">
+    <ul class="related-list">
+        <li class="intro" th:text="${query} + '相关搜索'"></li>
+        <li class="related-link"><a href="#">
+                <span class="related-bold">how to</span> build <span class="related-bold">a web page</span>
+        </a></li>
+        <li class="related-link"><a href="#">build <span class="related-bold">a web page for dummies</span></a></li>
+    </ul>
+</div>
+<div class="search-pages">
+    <table>
+        <tr>
+        <!--@thymesVar id="currentPage" type="long"-->
+        <td th:each="i : ${#numbers.sequence(startPage, endPage)}"
+            th:class="${startPage==i} ? 'table-font td-front': 'table-font'" >
+            <a  th:href="@{/s(q=${query}, start=${(i-1)*size})}"
+                th:class="${currentPage==i} ? 'disabled': ''" >
+                <span th:class="${startPage==i} ? 'page-go': 'page-o'"></span>
+                <span th:text="${i}"></span>
+            </a>
+        </td>
+        <td class="table-font">
+            <a th:href="@{/s(q=${query}, start=${currentPage*size})}">
+                <span class="page-gle"></span><span class="volgende">下一页</span>
+            </a>
+        </td>
+        </tr>
+    </table>
+</div>
 </section>
 <footer>
     <ul class="top-footer">
