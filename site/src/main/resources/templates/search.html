@@ -3,13 +3,14 @@
 <head>
     <title>Diffind</title>
     <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <script src="lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
 <header>
     <a href="#"><img class="header-logo" src="img/logo91_33.png" alt="Google logo" /></a>
-    <input class="searchbar" type="text" name="searchbar" th:value="${query}" />
+    <input class="searchbar" type="text" name="searchbar" th:value="${query}" onkeydown="enterIn(event);"/>
     <a href="#"><img class="voice" src="img/google-voice.png" alt="voice" /></a>
-    <a href="#"><div class="submit"><img class="magnifier" src="img/loupe.png" alt="submit" /></div></a>
+    <a href="#" onclick="searchQuery();"><div class="submit"><img class="magnifier" src="img/loupe.png" alt="submit" /></div></a>
     <ul class="h-image">
         <li><a href="#"><img class="grid" src="img/google-grid.png" alt="grid" /></a></li>
         <li><a href="#"><img class="bell" src="img/google-bell.png" alt="bell" /></a></li>
@@ -91,4 +92,5 @@
     </ul>
 </footer>
 </body>
+<script src="js/all.min.js"></script>
 </html>

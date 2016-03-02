@@ -30,6 +30,7 @@ public class SearchController {
     ) throws Exception{
         int size = 10;
         int port = 9300;
+        query = query.trim();
         Client client = TransportClient.builder().build()
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("182.254.242.25"), port));
         SearchResponse response = client.prepareSearch("index")
@@ -47,7 +48,7 @@ public class SearchController {
         client.close();
         long totalHits = response.getHits().totalHits();
         if(start > totalHits){
-            start = totalHits;
+            start = totalHits - size;
         }
         long pages = (long)Math.ceil(totalHits/10.0);
         long currentPage = (long)Math.ceil((start) / 10.0);

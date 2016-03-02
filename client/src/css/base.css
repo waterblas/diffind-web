@@ -471,7 +471,7 @@ section .logo {
     width: 269px;
     height: 95px;
 }
-#search {
+.searchbar {
     background-image: url('img/google-voice.png');
     background-position: right;
     background-repeat: no-repeat;
@@ -482,10 +482,10 @@ section .logo {
     width: 570px;
 }
 
-#search:hover {
+.searchbar:hover {
     border: 1px solid gray;
 }
-#search:focus {
+.searchbar:focus {
     outline: none;
     border: 1px solid #4285f4;
 }
@@ -556,7 +556,7 @@ footer a:hover{
 
         width: 50%;
     }
-    #search {
+    .searchbar {
 
         width: 280px;
     }
