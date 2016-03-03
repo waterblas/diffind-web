@@ -34,8 +34,40 @@ public class SearchController {
             Model model
     ) throws Exception{
         int size = 10;
-        int port = 9300;
         query = query.trim();
+        String[] terms = getSegmentTerm(query);
+        if(terms.length == 0){ return "home";}
+
+        SearchResponse response = getElasticResponse(terms, start, size);
+        long totalHits = response.getHits().totalHits();
+        if(start > totalHits){
+            start = totalHits - size;
+        }
+        long pages = (long)Math.ceil(totalHits/10.0);
+        long currentPage = (long)Math.ceil((start) / 10.0) + 1;
+        long startPage =  1;
+        long endPage = pages > size ? size: (pages == 0? 1: pages);
+        if((currentPage - size / 2) > 1){
+            if((currentPage + size / 2) < pages + 2){
+                startPage = currentPage - size / 2;
+                endPage = currentPage + size / 2 - 1;
+            }else{
+                startPage = (pages - size + 1 > 0) ? (pages - size + 1) :1;
+                endPage = pages;
+            }
+        }
+        model.addAttribute("query", query);
+        model.addAttribute("size", size);
+        model.addAttribute("totalHits", totalHits);
+        model.addAttribute("pages", pages);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("response", response);
+        return "search";
+    }
+
+    private String[] getSegmentTerm(String query){
         JiebaSegmenter segmenter = new JiebaSegmenter();
         List<SegToken> list = segmenter.process(query, JiebaSegmenter.SegMode.SEARCH);
         int termNum = list.size() > 5? 5:list.size();
@@ -43,8 +75,11 @@ public class SearchController {
         for(int i=0; i < termNum; i++) {
             terms[i] = list.get(i).word;
         }
-        if(terms.length == 0){ return "home";}
+        return terms;
+    }
 
+    private SearchResponse getElasticResponse(String[] terms, long start, int size) throws Exception{
+        int port = 9300;
         Settings settings = Settings.settingsBuilder()
                 .put("cluster.name", "byr-application").build();
         Client client = TransportClient.builder().settings(settings).build()
@@ -62,32 +97,7 @@ public class SearchController {
                 .actionGet();
         System.out.println(response);
         client.close();
-        long totalHits = response.getHits().totalHits();
-        if(start > totalHits){
-            start = totalHits - size;
-        }
-        long pages = (long)Math.ceil(totalHits/10.0);
-        long currentPage = (long)Math.ceil((start) / 10.0);
-        long startPage =  1;
-        long endPage = pages > size ? size: (pages == 0? 1: pages);
-        if((currentPage - size / 2) > 0){
-            if((currentPage + size / 2) < pages + 1){
-                startPage = currentPage - size / 2 + 1;
-                endPage = currentPage + size / 2 + 1;
-            }else{
-                startPage = (pages - size + 1 > 0) ? (pages - size + 1) :1;
-                endPage = pages;
-            }
-        }
-        model.addAttribute("query", query);
-        model.addAttribute("size", size);
-        model.addAttribute("totalHits", totalHits);
-        model.addAttribute("pages", pages);
-        model.addAttribute("currentPage", currentPage+1);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("response", response);
-        return "search";
+        return response;
     }
 
 }
