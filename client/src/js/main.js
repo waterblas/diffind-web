@@ -3,14 +3,21 @@ if (!String.prototype.trim) {
         return this.replace(/^\s+|\s+$/g, '');
     };
 }
-var searchQuery = function(){
-    var query = $("input[name='searchbar']").val();
+var check_fields = function(q){
+    var query = $("input[name="+q+"]").val();
     query = query.trim();
-    window.location.href="s?q="+query;
+    return query.length != 0;
 };
-function enterIn(evt){
-    var evt=evt?evt:(window.event?window.event:null);//兼容IE和FF
-    if (evt.keyCode==13){
-        searchQuery();
+var search_query = function(q){
+    if (check_fields(q)){
+        window.location.href="s?q=" + $("input[name="+q+"]").val().trim();
+    }
+    return false
+};
+function enterIn(evt, q){
+    var evted = evt? evt:(window.event?window.event:null);//兼容IE和FF
+    if (evted.keyCode==13){
+        search_query(q);
     }
 }
+

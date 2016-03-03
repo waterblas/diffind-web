@@ -43,7 +43,7 @@ public class SearchController {
         for(int i=0; i < termNum; i++) {
             terms[i] = list.get(i).word;
         }
-        if(terms.length == 0){ return "400";}
+        if(terms.length == 0){ return "home";}
 
         Settings settings = Settings.settingsBuilder()
                 .put("cluster.name", "byr-application").build();

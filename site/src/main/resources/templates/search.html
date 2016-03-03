@@ -8,9 +8,11 @@
 <body>
 <header>
     <a href="#"><img class="header-logo" src="img/logo91_33.png" alt="Google logo" /></a>
-    <input class="searchbar" type="text" name="searchbar" th:value="${query}" onkeydown="enterIn(event);"/>
+    <input class="searchbar" type="text" name="searchbar" th:value="${query}" onkeydown="enterIn(event, 'searchbar');"/>
     <a href="#"><img class="voice" src="img/google-voice.png" alt="voice" /></a>
-    <a href="#" onclick="searchQuery();"><div class="submit"><img class="magnifier" src="img/loupe.png" alt="submit" /></div></a>
+    <a href="#" onclick="search_query('searchbar');">
+        <div class="submit"><img class="magnifier" src="img/loupe.png" alt="submit" /></div>
+    </a>
     <ul class="h-image">
         <li><a href="#"><img class="grid" src="img/google-grid.png" alt="grid" /></a></li>
         <li><a href="#"><img class="bell" src="img/google-bell.png" alt="bell" /></a></li>
@@ -92,5 +94,5 @@
     </ul>
 </footer>
 </body>
-<script src="js/all.min.js"></script>
+<script src="js/all.min.js?ver0.5"></script>
 </html>

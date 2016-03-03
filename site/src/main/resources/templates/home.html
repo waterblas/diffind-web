@@ -2,8 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Diffind</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" href="css/base.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="css/base.css" type="text/css" />
+    <script src="lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
     <nav class="group-links">
@@ -19,7 +20,7 @@
         <div class="logo">
         <img src="img/google-logo.png" alt="google-logo" />
         </div>
-        <form action="s" method="get">
+        <form action="s" method="get" onsubmit="return check_fields('q');">
             <input type="text" name="q" class="searchbar" />
             <fieldset class="search-button">
                 <button>
@@ -44,6 +45,7 @@
         </div>
     </footer>
 </body>
+<script src="js/all.min.js?ver0.5"></script>
 </html>
 
 
