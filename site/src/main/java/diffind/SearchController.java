@@ -1,5 +1,7 @@
 package diffind;
 
+import java.net.InetAddress;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +13,9 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.common.settings.Settings;
-import java.net.InetAddress;
+import com.huaban.analysis.jieba.JiebaSegmenter;
+import com.huaban.analysis.jieba.SegToken;
+
 
 
 @Controller
@@ -32,6 +36,15 @@ public class SearchController {
         int size = 10;
         int port = 9300;
         query = query.trim();
+        JiebaSegmenter segmenter = new JiebaSegmenter();
+        List<SegToken> list = segmenter.process(query, JiebaSegmenter.SegMode.SEARCH);
+        int termNum = list.size() > 5? 5:list.size();
+        String[] terms = new String[termNum];
+        for(int i=0; i < termNum; i++) {
+            terms[i] = list.get(i).word;
+        }
+        if(terms.length == 0){ return "400";}
+
         Settings settings = Settings.settingsBuilder()
                 .put("cluster.name", "byr-application").build();
         Client client = TransportClient.builder().settings(settings).build()
@@ -39,7 +52,7 @@ public class SearchController {
         SearchResponse response = client.prepareSearch("index")
                 .setTypes("post")
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(QueryBuilders.termQuery("content", query))
+                .setQuery(QueryBuilders.termsQuery("content", terms))
                 .setFrom((int)start).setSize(size).setExplain(false)
                 .setHighlighterPostTags("</em>")
                 .setHighlighterPreTags("<em>")
@@ -56,14 +69,14 @@ public class SearchController {
         long pages = (long)Math.ceil(totalHits/10.0);
         long currentPage = (long)Math.ceil((start) / 10.0);
         long startPage =  1;
-        long endPage = pages > size ? size: pages;
+        long endPage = pages > size ? size: (pages == 0? 1: pages);
         if((currentPage - size / 2) > 0){
             if((currentPage + size / 2) < pages + 1){
                 startPage = currentPage - size / 2 + 1;
                 endPage = currentPage + size / 2 + 1;
             }else{
                 startPage = (pages - size + 1 > 0) ? (pages - size + 1) :1;
-                endPage = pages == 0? 1: pages;
+                endPage = pages;
             }
         }
         model.addAttribute("query", query);

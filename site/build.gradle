@@ -9,6 +9,7 @@ dependencies {
     compile project(':client')
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile ("org.elasticsearch:elasticsearch:2.2.0")
+    compile ("com.huaban:jieba-analysis:1.0.2")
     testCompile("junit:junit")
 }
 
