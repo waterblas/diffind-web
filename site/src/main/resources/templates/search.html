@@ -39,7 +39,7 @@
     </p>
     <ul th:each="hit,iter : ${response.getHits().hits()}" class="search-results">
         <li class="main-link">
-            <a target="_blank" th:href="${hit.getSource().get('url')}">标题忘记放进索引了，TODO .......</a>
+            <a target="_blank" th:href="${hit.getSource().get('url')}" th:text="${hit.getSource().get('title')}"></a>
         </li>
         <li class="second-link" th:text="${hit.getSource().get('url')}"></li>
         <li class="description" th:utext="${hit.getHighlightFields().get('content').getFragments()[0]}"></li>

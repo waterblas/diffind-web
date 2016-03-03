@@ -10,6 +10,7 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.common.settings.Settings;
 import java.net.InetAddress;
 
 
@@ -31,7 +32,9 @@ public class SearchController {
         int size = 10;
         int port = 9300;
         query = query.trim();
-        Client client = TransportClient.builder().build()
+        Settings settings = Settings.settingsBuilder()
+                .put("cluster.name", "byr-application").build();
+        Client client = TransportClient.builder().settings(settings).build()
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("182.254.242.25"), port));
         SearchResponse response = client.prepareSearch("index")
                 .setTypes("post")
@@ -41,7 +44,7 @@ public class SearchController {
                 .setHighlighterPostTags("</em>")
                 .setHighlighterPreTags("<em>")
                 .addHighlightedField("content")
-                .setFetchSource(new String[]{"url"}, null)
+                .setFetchSource(new String[]{"url", "title"}, null)
                 .execute()
                 .actionGet();
         System.out.println(response);
@@ -60,7 +63,7 @@ public class SearchController {
                 endPage = currentPage + size / 2 + 1;
             }else{
                 startPage = (pages - size + 1 > 0) ? (pages - size + 1) :1;
-                endPage = pages;
+                endPage = pages == 0? 1: pages;
             }
         }
         model.addAttribute("query", query);
