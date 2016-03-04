@@ -1,0 +1,28 @@
+spring:
+   profiles:
+     active: dev
+
+elastic:
+  cluster:
+    name: byr-application
+    index: index
+    type: post
+  size: 10
+
+---
+
+spring:
+  profiles: production
+elastic:
+  server:
+    address: localhost
+    port: 9300
+
+---
+
+spring:
+  profiles: dev
+elastic:
+  server:
+    address: 182.254.242.25
+    port: 9300

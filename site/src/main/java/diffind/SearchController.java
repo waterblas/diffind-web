@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
@@ -17,9 +18,11 @@ import com.huaban.analysis.jieba.JiebaSegmenter;
 import com.huaban.analysis.jieba.SegToken;
 
 
-
 @Controller
 public class SearchController {
+
+    @Autowired
+    private ElasticSettings elasticSettings;
 
     @RequestMapping("/")
     public String home(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
@@ -33,7 +36,7 @@ public class SearchController {
             @RequestParam(value="start", required=false, defaultValue = "0") long start,
             Model model
     ) throws Exception{
-        int size = 10;
+        byte size = elasticSettings.getSize();
         query = query.trim();
         String[] terms = getSegmentTerm(query);
         if(terms.length == 0){ return "home";}
@@ -43,8 +46,8 @@ public class SearchController {
         if(start > totalHits){
             start = totalHits - size;
         }
-        long pages = (long)Math.ceil(totalHits/10.0);
-        long currentPage = (long)Math.ceil((start) / 10.0) + 1;
+        long pages = (long)Math.ceil(totalHits/(float)size);
+        long currentPage = (long)Math.ceil((start) / (float)size) + 1;
         long startPage =  1;
         long endPage = pages > size ? size: (pages == 0? 1: pages);
         if((currentPage - size / 2) > 1){
@@ -79,13 +82,18 @@ public class SearchController {
     }
 
     private SearchResponse getElasticResponse(String[] terms, long start, int size) throws Exception{
-        int port = 9300;
+        int port = (Integer) elasticSettings.getServer().get("port");
+        String address = (String) elasticSettings.getServer().get("address");
+        String clusterName = elasticSettings.getCluster().get("name");
+        String clusterIndex = elasticSettings.getCluster().get("index");
+        String clusterType = elasticSettings.getCluster().get("type");
+
         Settings settings = Settings.settingsBuilder()
-                .put("cluster.name", "byr-application").build();
+                .put("cluster.name", clusterName).build();
         Client client = TransportClient.builder().settings(settings).build()
-                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("182.254.242.25"), port));
-        SearchResponse response = client.prepareSearch("index")
-                .setTypes("post")
+                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(address), port));
+        SearchResponse response = client.prepareSearch(clusterIndex)
+                .setTypes(clusterType)
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(QueryBuilders.termsQuery("content", terms))
                 .setFrom((int)start).setSize(size).setExplain(false)
