@@ -493,15 +493,22 @@ section .logo {
 .search-button button{
     margin: 5px;
     padding: 0 5px;
-    color: #444;
-    font-size: 11px;
-    font-family: Arial;
+    color: #757575;
+    font-size: 13px;
+    font-weight: bold;
     background: linear-gradient(#f5f5f5,#f1f1f1);
     background: #f5f5f5;
-    border: 1px solid #dcdcdc;
+    border: 1px solid #f2f2f2;
     border-radius: 2px;
-    font: bold 11px/27px Arial,sans-serif;
-
+    height: 36px;
+    font-family: arial,sans-serif;
+}
+.search-button button:hover {
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    background-color: #f8f8f8;
+    border: 1px solid #c6c6c6;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    color: #222;
 }
 form {
     padding-top: 20px;
@@ -569,5 +576,9 @@ footer a:hover{
 
         height: 100px;
     }
+}
+.brief{
+    color: #757575;
+    text-align: -webkit-center;
 }
 

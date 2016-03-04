@@ -2,18 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Diffind</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="css/base.css" type="text/css" />
-    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <th:block th:replace="fragments/header :: header">header</th:block>
+    <link rel="stylesheet" href="css/base.css?ver0.3" type="text/css" />
 </head>
 <body>
     <nav class="group-links">
         <ul class="navigation">
-            <li><a href="#">+You</a></li>
             <li><a href="http://bbs.byr.cn/">BYR BBS</a></li>
-            <li><a href="#">Images</a></li>
+            <li><a href="http://m.byr.cn/">BBS Mobile</a></li>
             <li><a href="#"><img src="img/google-grid.png" alt="google-grid" class="grid" /></a></li>
-            <li><a href="#" class="btn-login">By Donvan</a>
+            <li><a href="https://github.com/waterblas/diffind-web" class="btn-login">Fork me on Github</a>
         </li></ul>
     </nav>
     <section class="main">
@@ -23,29 +21,24 @@
         <form action="s" method="get" onsubmit="return check_fields('q');">
             <input type="text" name="q" class="searchbar" />
             <fieldset class="search-button">
-                <button>
-                    Diffind Search
-                </button>
-                <button>
-                    I’m Feeling Lucky
-                </button>
+                <button>Diffind 搜索</button>
+                <button>I’m Feeling Lucky</button>
             </fieldset>
         </form>
     </section>
+    <div class="brief">Diffind 是一个索引范围限于移动端北邮人BBS的搜索引擎</div>
     <footer class="about">
         <div class="advertising">
-            <a href="#">Advertising</a>
-            <a href="#">Business</a>
+            <a href="mailto:me@forldy.com">Contact Me</a>
             <a href="#">About</a>
         </div>
         <div class="terms">
-            <a href="#">Privacy &amp; Terms</a>
-            <a href="#">Settings</a>
-            <a href="#" th:text="'Hello, ' + ${name} + '!'"></a>
+            <a href="https://www.mozilla.org/en-US/MPL/2.0/">Copyright &copy; 2015 Donovan </a>
+            <a href="#" th:text="'Welcome, ' + ${name} + ' diffind!'"></a>
         </div>
     </footer>
 </body>
-<div th:replace="fragments/footer :: footer"></div>
+<th:block th:replace="fragments/footer :: footer">footer</th:block>
 </html>
 
 
