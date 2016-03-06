@@ -2,6 +2,19 @@ spring:
    profiles:
      active: dev
 
+server.tomcat.accesslog:
+    # Enable access log:
+    enabled: true
+
+    # Directory in which log files are created. Can be relative to the tomcat base dir or absolute:
+    directory: /var/log/tomcat7/
+
+    # Format pattern for access logs:
+    pattern: '%h %l %u %t "%r" %s %b %D'
+
+    # Log file name suffix:
+    suffix: .log
+
 elastic:
   cluster:
     name: byr-application
